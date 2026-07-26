@@ -47,7 +47,8 @@
   .brand .cup{width:30px;height:30px;border-radius:50%;background:linear-gradient(150deg,var(--gold-soft),var(--gold));display:grid;place-items:center;color:#241800;font-weight:700;font-family:var(--sans);font-size:.85rem}
   .nav .btn{padding:.5rem 1.1rem;font-size:.86rem}
 
-  .hero{background:radial-gradient(70% 80% at 50% 0%,rgba(31,122,82,.35),transparent 60%),linear-gradient(170deg,#123f2c,#16241d);color:#fff;text-align:center;padding:clamp(3.4rem,8vw,5.5rem) 0 clamp(3rem,6vw,4.5rem)}
+  .hero{background:radial-gradient(70% 80% at 50% 0%,rgba(31,122,82,.35),transparent 60%),linear-gradient(170deg,#123f2c,#16241d);color:#fff;text-align:center;padding:clamp(3.4rem,8vw,5.5rem) 0 clamp(3rem,6vw,4.5rem);position:relative;overflow:hidden}
+  .hero > .wrap{position:relative;z-index:2}
   .hero .eyebrow{display:block;margin-bottom:1rem}
   .hero .score{display:inline-flex;align-items:center;gap:.8rem;font-family:var(--serif);font-weight:600;margin-bottom:1rem}
   .hero .score .from{color:#e79a86;font-size:2.4rem}
@@ -100,6 +101,8 @@
   </header>
 
   <div class="hero">
+    <div class="ftc-rain" aria-hidden="true"></div>
+    <div class="ftc-rain ftc-rain2" aria-hidden="true"></div>
     <div class="wrap">
       <span class="eyebrow">Credit &amp; Financial Freedom</span>
       <div class="score"><span class="from">350</span><span class="arrow">→</span><span class="to">800+</span></div>
@@ -121,6 +124,12 @@
     .cl-train{position:absolute;top:47px;left:0;font-size:32px;line-height:1;white-space:nowrap;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));animation:clRoll 15s linear infinite;will-change:transform}
     @keyframes clRoll{from{transform:translateX(-16vw)}to{transform:translateX(112vw)}}
     @media (prefers-reduced-motion:reduce){.cl-train{animation-duration:60s}}
+
+    .ftc-rain{position:absolute;inset:-20% -8% 0;pointer-events:none;z-index:1;opacity:.13;background-image:repeating-linear-gradient(100deg,transparent 0 20px,rgba(255,255,255,.5) 20px 21px);background-size:auto 21px;animation:ftcRain1 .5s linear infinite;will-change:background-position}
+    .ftc-rain2{opacity:.07;background-image:repeating-linear-gradient(98deg,transparent 0 33px,rgba(205,225,255,.5) 33px 34px);background-size:auto 34px;animation:ftcRain2 .85s linear infinite}
+    @keyframes ftcRain1{to{background-position:-5px 21px}}
+    @keyframes ftcRain2{to{background-position:-7px 34px}}
+    @media (prefers-reduced-motion:reduce){.ftc-rain,.ftc-rain2{animation-duration:9s}}
 
     .ftc-player{position:fixed;left:16px;bottom:16px;z-index:70;display:flex;align-items:center;gap:11px;background:rgba(18,63,44,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--gold);border-radius:999px;padding:8px 16px 8px 8px;box-shadow:0 12px 32px rgba(0,0,0,.42)}
     .ftc-player button{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#2a1c00;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;line-height:1}
@@ -286,26 +295,67 @@
     </div>
   </footer>
 
-  <!-- The Comeback Line — money music -->
+  <!-- The Comeback Line — calm rain + money groove -->
   <div class="ftc-player">
-    <button id="ftcBtn" aria-label="Play the vibe">▶</button>
+    <button id="ftcRain" aria-label="Calm rain on or off" title="Calm rain">🌧️</button>
+    <button id="ftcBtn" aria-label="Play the money groove" title="Money groove">🚂</button>
     <div>
-      <div class="t" id="ftcT">🚂 All aboard</div>
-      <div class="s">&ldquo;Movement Proposition&rdquo; &mdash; Kevin MacLeod (incompetech.com) &middot; CC&nbsp;BY&nbsp;4.0</div>
+      <div class="t" id="ftcT">Rain 🌧️&nbsp;&middot;&nbsp;Groove 🚂</div>
+      <div class="s">Tap 🌧️ for calm rain or 🚂 for the groove &middot; &ldquo;Movement Proposition&rdquo; &mdash; Kevin MacLeod &middot; CC&nbsp;BY&nbsp;4.0</div>
     </div>
     <audio id="ftcA" src="audio/flip-the-cup-vibe.mp3" preload="none" loop></audio>
   </div>
   <script>
     (function(){
-      var a=document.getElementById('ftcA'),b=document.getElementById('ftcBtn'),t=document.getElementById('ftcT');
-      if(!a||!b)return;
-      b.addEventListener('click',function(){
-        if(a.paused){
-          a.play().then(function(){b.textContent='❚❚';t.textContent='🚂 Rolling…';})
-            .catch(function(){t.textContent='Tap again ▶';});
-        }else{
-          a.pause();b.textContent='▶';t.textContent='🚂 All aboard';
+      var rainBtn=document.getElementById('ftcRain'), grooveBtn=document.getElementById('ftcBtn'),
+          t=document.getElementById('ftcT'), a=document.getElementById('ftcA');
+      if(!rainBtn||!grooveBtn||!a)return;
+      var AC=window.AudioContext||window.webkitAudioContext;
+      var ctx=null, rmaster=null, noiseBuf=null, rainOn=false, rt=null;
+      function mkNoise(){
+        var n=ctx.sampleRate*2, b=ctx.createBuffer(1,n,ctx.sampleRate), d=b.getChannelData(0), b0=0,b1=0,b2=0;
+        for(var i=0;i<n;i++){var w=Math.random()*2-1; b0=0.997*b0+0.029*w; b1=0.985*b1+0.032*w; b2=0.95*b2+0.048*w; d[i]=(b0+b1+b2+w*0.1)*0.2;}
+        return b;
+      }
+      function thunder(){
+        if(!ctx)return; var tt=ctx.currentTime;
+        var tb=ctx.createBufferSource(); tb.buffer=noiseBuf; tb.loop=true;
+        var tl=ctx.createBiquadFilter(); tl.type='lowpass'; tl.frequency.value=90;
+        var g=ctx.createGain(); g.gain.value=0.0001; tb.connect(tl); tl.connect(g); g.connect(rmaster); tb.start();
+        g.gain.setValueAtTime(0.0001,tt); g.gain.linearRampToValueAtTime(0.45,tt+0.09); g.gain.exponentialRampToValueAtTime(0.0005,tt+3.4);
+        tl.frequency.linearRampToValueAtTime(45,tt+3.4); tb.stop(tt+3.6);
+      }
+      function startRain(){
+        ctx=new AC(); rmaster=ctx.createGain(); rmaster.gain.value=0.0001; rmaster.connect(ctx.destination); noiseBuf=mkNoise();
+        var r=ctx.createBufferSource(); r.buffer=noiseBuf; r.loop=true;
+        var hp=ctx.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=430;
+        var lp=ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=2200;
+        r.connect(hp); hp.connect(lp); lp.connect(rmaster); r.start();
+        var lfo=ctx.createOscillator(); lfo.frequency.value=0.11; var lg=ctx.createGain(); lg.gain.value=450; lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
+        rmaster.gain.linearRampToValueAtTime(0.24, ctx.currentTime+1.6);
+        (function sched(){ if(!ctx)return; rt=setTimeout(function(){ if(rainOn) thunder(); sched(); }, 24000+Math.random()*24000); })();
+      }
+      function setRain(on){
+        if(on){
+          if(!ctx){ startRain(); }
+          else { if(ctx.resume) ctx.resume(); rmaster.gain.cancelScheduledValues(ctx.currentTime); rmaster.gain.linearRampToValueAtTime(0.24, ctx.currentTime+1.0); }
+          rainOn=true; rainBtn.classList.add('on');
+        } else {
+          if(ctx){ rmaster.gain.cancelScheduledValues(ctx.currentTime); rmaster.gain.linearRampToValueAtTime(0.0001, ctx.currentTime+0.8); }
+          rainOn=false; rainBtn.classList.remove('on');
         }
+        label();
+      }
+      function label(){
+        var p=[];
+        if(rainOn) p.push('🌧️ Calm rain');
+        if(!a.paused) p.push('🚂 Money groove');
+        t.textContent = p.length ? p.join('  ·  ') : 'Rain 🌧️ · Groove 🚂';
+      }
+      rainBtn.addEventListener('click', function(){ setRain(!rainOn); });
+      grooveBtn.addEventListener('click', function(){
+        if(a.paused){ a.play().then(function(){ grooveBtn.classList.add('on'); label(); }).catch(function(){ t.textContent='Tap 🚂 again'; }); }
+        else { a.pause(); grooveBtn.classList.remove('on'); label(); }
       });
     })();
   </script>
