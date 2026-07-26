@@ -112,6 +112,49 @@
     </div>
   </div>
 
+  <style>
+    .comeback-line{background:var(--emerald-deep);padding:26px 0 0;overflow:hidden;position:relative}
+    .cl-head{text-align:center;padding:0 20px}
+    .cl-tag{font-family:var(--serif,Georgia,serif);font-style:italic;color:#eaf3ed;font-size:clamp(1.1rem,2.8vw,1.55rem);margin:.45rem auto 0;max-width:38ch;line-height:1.35}
+    .cl-track{position:relative;height:110px;margin-top:10px}
+    .cl-bridge{position:absolute;inset:0;width:100%;height:100%;display:block}
+    .cl-train{position:absolute;top:47px;left:0;font-size:32px;line-height:1;white-space:nowrap;filter:drop-shadow(0 2px 4px rgba(0,0,0,.4));animation:clRoll 15s linear infinite;will-change:transform}
+    @keyframes clRoll{from{transform:translateX(-16vw)}to{transform:translateX(112vw)}}
+    @media (prefers-reduced-motion:reduce){.cl-train{animation-duration:60s}}
+
+    .ftc-player{position:fixed;left:16px;bottom:16px;z-index:70;display:flex;align-items:center;gap:11px;background:rgba(18,63,44,.95);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid var(--gold);border-radius:999px;padding:8px 16px 8px 8px;box-shadow:0 12px 32px rgba(0,0,0,.42)}
+    .ftc-player button{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(180deg,var(--gold-soft),var(--gold));color:#2a1c00;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;line-height:1}
+    .ftc-player .t{font-weight:700;font-size:.82rem;color:#eaf3ed;line-height:1.15}
+    .ftc-player .s{font-size:.6rem;color:#a9c0b3;line-height:1.2}
+    @media (max-width:560px){.ftc-player .s{display:none}}
+  </style>
+
+  <!-- The Comeback Line: train crossing the bridge -->
+  <section class="comeback-line" aria-label="The comeback line">
+    <div class="cl-head">
+      <span class="eyebrow" style="color:var(--gold-soft)">The Comeback Line</span>
+      <p class="cl-tag">From rock bottom, across the bridge, to the other side.</p>
+    </div>
+    <div class="cl-track">
+      <svg class="cl-bridge" viewBox="0 0 1200 110" preserveAspectRatio="none" aria-hidden="true">
+        <!-- deck -->
+        <line x1="0" y1="82" x2="1200" y2="82" stroke="var(--gold)" stroke-width="3"/>
+        <!-- suspension towers + cables -->
+        <g stroke="var(--gold)" stroke-width="2.5" fill="none" opacity=".85">
+          <line x1="200" y1="14" x2="200" y2="82"/><line x1="600" y1="14" x2="600" y2="82"/><line x1="1000" y1="14" x2="1000" y2="82"/>
+          <path d="M0,60 Q200,14 400,60 Q500,74 600,60 Q800,14 1000,60 Q1100,74 1200,60"/>
+        </g>
+        <!-- hangers -->
+        <g stroke="var(--gold-soft)" stroke-width="1" opacity=".45">
+          <line x1="100" y1="52" x2="100" y2="82"/><line x1="300" y1="52" x2="300" y2="82"/><line x1="500" y1="66" x2="500" y2="82"/><line x1="700" y1="66" x2="700" y2="82"/><line x1="900" y1="52" x2="900" y2="82"/><line x1="1100" y1="52" x2="1100" y2="82"/>
+        </g>
+        <!-- water shimmer below -->
+        <line x1="0" y1="100" x2="1200" y2="100" stroke="#1f7a52" stroke-width="6" opacity=".35"/>
+      </svg>
+      <div class="cl-train" aria-hidden="true">🚂&#8202;🚃&#8202;🚃&#8202;💵</div>
+    </div>
+  </section>
+
   <section>
     <div class="wrap">
       <div class="head"><span class="eyebrow">What We Work On</span><h2>The tools that changed everything for me</h2><p>Education and coaching to help you take back control &mdash; one honest step at a time.</p></div>
@@ -187,6 +230,8 @@
         <div class="card"><div class="em">📙</div><h3>The Psychology of Money</h3><p><b>Morgan Housel</b> &mdash; wealth is 90% behavior. Mindset beats math.</p></div>
         <div class="card"><div class="em">📕</div><h3>The 10X Rule</h3><p><b>Grant Cardone</b> &mdash; set bigger targets and take massive action.</p></div>
         <div class="card"><div class="em">📔</div><h3>I Will Teach You to Be Rich</h3><p><b>Ramit Sethi</b> &mdash; automate your money and spend on what you love, guilt-free.</p></div>
+        <div class="card" style="border-color:var(--gold)"><div class="em">🕊️</div><h3>The Big Book</h3><p><b>Alcoholics Anonymous</b> &mdash; the book that started my recovery. Before the money could come back, the man had to. <a href="https://www.aa.org/the-big-book" target="_blank" rel="noopener">Read it free &rarr;</a></p></div>
+        <div class="card" style="border-color:var(--gold)"><div class="em">✝️</div><h3>The Open Bible</h3><p><b>God&rsquo;s Word</b> &mdash; my Open Bible reached my cell through <a href="https://onwingslikeadove.com/" target="_blank" rel="noopener">On Wings Like a Dove</a> prison ministry (NC). The foundation under everything else &mdash; Psalm 55:6.</p></div>
       </div>
       <p style="font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,3.2vw,1.7rem);color:var(--emerald-deep);text-align:center;max-width:26ch;margin:2.4rem auto 0;line-height:1.3">&ldquo;You own your money &mdash; or your money owns you.&rdquo;<span style="display:block;font-family:var(--sans);font-style:normal;font-size:.82rem;font-weight:700;letter-spacing:.14em;color:var(--gold);margin-top:.7rem">&mdash; DAVID HAHN</span></p>
     </div>
@@ -240,5 +285,29 @@
       <a href="https://hahntechcorp.com" style="color:inherit;text-decoration:underline">Hahn Tech Corp</a> · <a href="https://koalateakratom.com" style="color:inherit;text-decoration:underline">Koala Tea Kratom</a> · <a href="https://red-sea-rentals.com" style="color:inherit;text-decoration:underline">Red Sea Rentals</a> · <a href="https://readytechrepairs.com" style="color:inherit;text-decoration:underline">Ready Tech Repairs</a> · <a href="https://ubuntumylife.com" style="color:inherit;text-decoration:underline">Ubuntu My Life</a> · <a href="https://flipthecupfinancials.com" style="color:inherit;text-decoration:underline">Flip the Cup</a> · <a href="https://everandamen.org" style="color:inherit;text-decoration:underline">Ever & Amen</a> · <a href="https://donutsphobagels.com" style="color:inherit;text-decoration:underline">Donuts Pho Bagels</a> · <a href="https://hahnsparkling.com" style="color:inherit;text-decoration:underline">Hahn Sparkling</a> · <a href="https://livingwaterdelivered.com" style="color:inherit;text-decoration:underline">Living Water</a> · <a href="https://fishingpierhopper.com" style="color:inherit;text-decoration:underline">Pier Hopper</a> · <a href="https://tortugueroturtles.com" style="color:inherit;text-decoration:underline">Track the Turtles</a> · <a href="https://wishafter.com" style="color:inherit;text-decoration:underline">Wish Ever After</a> · <a href="https://methuselahmoney.com" style="color:inherit;text-decoration:underline">Methuselah</a> · <a href="https://aihealthnwellness.com" style="color:inherit;text-decoration:underline">AI Health & Wellness</a> · <a href="https://davidworthingtonhahn.com" style="color:inherit;text-decoration:underline">David Hahn</a>
     </div>
   </footer>
+
+  <!-- The Comeback Line — money music -->
+  <div class="ftc-player">
+    <button id="ftcBtn" aria-label="Play the vibe">▶</button>
+    <div>
+      <div class="t" id="ftcT">🚂 All aboard</div>
+      <div class="s">&ldquo;Movement Proposition&rdquo; &mdash; Kevin MacLeod (incompetech.com) &middot; CC&nbsp;BY&nbsp;4.0</div>
+    </div>
+    <audio id="ftcA" src="audio/flip-the-cup-vibe.mp3" preload="none" loop></audio>
+  </div>
+  <script>
+    (function(){
+      var a=document.getElementById('ftcA'),b=document.getElementById('ftcBtn'),t=document.getElementById('ftcT');
+      if(!a||!b)return;
+      b.addEventListener('click',function(){
+        if(a.paused){
+          a.play().then(function(){b.textContent='❚❚';t.textContent='🚂 Rolling…';})
+            .catch(function(){t.textContent='Tap again ▶';});
+        }else{
+          a.pause();b.textContent='▶';t.textContent='🚂 All aboard';
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
